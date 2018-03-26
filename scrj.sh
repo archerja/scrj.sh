@@ -1,19 +1,32 @@
 #!/bin/bash
 
-version='0.4'
+appname="Video Screenshot Frame Saver"
+version="0.5"
 
+shortname=$(basename $0)
+fullname=$0
+oneliner="usage: $shortname -p [path] -t mm:ss [optional: -r [size] -a]"
+ 
 resize=
 all=
 mmss=
 dopath=
 
+# display name and version
+      echo ""
+      echo "    $appname"
+      echo "    $shortname version $version"
+
 # check for at least 2 arguments, or help
 if [ "$#" -lt 2 ]; then
    if [ $1 ] && [ $1 == '-h' ]; then
-      echo "$0 version $version"
+      echo ""
    else
-      echo "$0 must have at least 2 arguments."
-      echo "Try help with $0 -h"
+      echo ""
+      echo "    $oneliner"
+      echo ""
+      echo "    $shortname must have at least 2 arguments."
+      echo "    Try help with $shortname -h"
       exit 1
    fi
 fi
@@ -22,17 +35,24 @@ fi
 while getopts :hr:at:p: opt; do
   case $opt in
   h)
-      echo "(mplayer must be installed and optionally imagemagick for convert)"
-      echo "$0 will take 1 frame from each video (*.m*) in a directory,"
-      echo "       and save a jpg image with the same name."
-      echo "$0 -p [path] -t mm:ss [options]"
-      echo "required:"
-      echo "      -p vids =  directory path"
-      echo "      -t 5:15 =  take frame at minute:second"
-      echo "optional:"
-      echo "      -r 200  =  resize to width of ? (using convert)"
-      echo "      -a      =  all videos in directory"
-      echo "                 [default is new videos only]"
+      echo "    (NOTE: mplayer must be installed for script to work"
+      echo "           and optionally imagemagick for convert)"
+      echo ""
+      echo "    $shortname will take 1 frame from each video (*.m*) in a directory,"
+      echo "           (using mplayer) and save a jpg image with the same name."
+      echo ""
+      echo "           You can optionally use convert to resize the image."
+      echo ""
+      echo "    $oneliner"
+      echo ""
+      echo "    required:"
+      echo "          -p vids =  directory path"
+      echo "          -t 5:15 =  take frame at minute:second"
+      echo ""
+      echo "    optional:"
+      echo "          -r 200  =  resize to width of 200 (using convert)"
+      echo "          -a      =  all videos in directory (overwrite existing jpg)"
+      echo "                     [default is new jpg if none exists]"
       echo ""
       exit 1
       ;;
@@ -50,7 +70,7 @@ while getopts :hr:at:p: opt; do
       ;;
   \?)
       echo "Invalid option: -$OPTARG"  >&2
-      echo "Try help with $0 -h"  >&2
+      echo "Try help with $shortname -h"  >&2
       exit 1
       ;;
   :)
